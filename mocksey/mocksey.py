@@ -73,7 +73,7 @@ def generate_mock(subject):
                 # import pdb; pdb.set_trace()
                 # bind(mock, val, attr)
                 # setattr(mock.__class__, attr, val.__get__(mock, mock.__class__))
-                types.MethodType(val, mock, MockseyObject)
+                types.MethodType(val, mock)
             else:
                 setattr(mock, attr, val)
     return mock
