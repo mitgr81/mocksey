@@ -40,7 +40,7 @@ class MockseyObject(object):
         return self.properties[called_function]
 
     def run_asserts(self, assert_equal=assert_equal):
-        for function_name, function_data in self.expected_functions.iteritems():
+        for function_name, function_data in self.expected_functions.items():
             if function_data.get('count', 0) > 0:
                 expected = self.expected_functions[function_name]['count']
                 actual = self.actual_functions.get(function_name, {'count': 0})['count']

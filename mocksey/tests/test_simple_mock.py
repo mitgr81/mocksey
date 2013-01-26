@@ -7,6 +7,10 @@ import random
 import unittest
 from nose.tools import assert_equals
 
+import sys
+if sys.version_info < (3,):
+    range = xrange
+
 TEETH_PROP = '%d wombat teeth are full of ouch' % random.randint(0, 30)
 
 
@@ -60,7 +64,7 @@ class SimpleMockTestCase(unittest.TestCase):
     def test_mock_returns_at(self):
         """ mocksey.MockObject: Mocked function returns requested value at requested index """
         masticate_return = "Okay okay, I'll chew it up attempt %d!"
-        for trial in xrange(random.randint(2, 15)):
+        for trial in range(random.randint(2, 15)):
             self.mock.returns_at(trial, 'masticate', masticate_return % (trial + 1))
             self.assertEqual(masticate_return % (trial + 1), self.mob.feed())
 
@@ -77,7 +81,7 @@ class SimpleMockTestCase(unittest.TestCase):
         """ mocksey.MockObject: Mock blows up if an expected function is not called """
         call_count = random.randint(1, 50)
         self.mock.expect_call_count('masticate', call_count)
-        for waffle in xrange(call_count):
+        for waffle in range(call_count):
             self.mock.masticate()
         try:
             self.mock.run_asserts(assert_equals)
