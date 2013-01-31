@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-import os
-import sys
-
 import mocksey
 
 try:
@@ -22,7 +19,7 @@ setup(
     description=mocksey.__description__,
     long_description=open('README.rst').read(),
     author='Chris McGraw',
-    author_email='mitgr81@mitgr81.com',
+    author_email='mitgr81+mocksey@mitgr81.com',
     url='https://github.com/mitgr81/mocksey',
     test_suite='mocksey.tests',
     packages=packages,
@@ -34,7 +31,9 @@ setup(
     classifiers=(
         'Intended Audience :: Developers',
         'Natural Language :: English',
-        'License :: OSI Approved :: Apache Software License',
+        'License :: OSI Approved :: MIT License',
+        "Operating System :: OS Independent",
+        "Development Status :: 4 - Beta",
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',

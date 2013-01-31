@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from mocksey import generate_mock  # SUT
+from mocksey import generate_mock, MockseyObject  # SUT
 
 import random
 import unittest
@@ -21,6 +21,14 @@ class WileyWombat(object):
         while True:
             pass
 
+    def patty_pat(self, patting_device):
+        while True:
+            print("blowing up your tests now, kthxbie")
+
+    def perform(self, **feat):
+        while True:
+            print("Now %s-ifying %s" % feat.items()[0])
+
 
 class WombatMob(object):
 
@@ -29,6 +37,15 @@ class WombatMob(object):
 
     def feed(self):
         return self.wombat.masticate()
+
+    def pat(self, patting_device='face'):
+        return self.wombat.patty_pat(patting_device)
+
+    def perform(self, **feat):
+        return self.wombat.perform(**feat)
+
+    def do_yer_business(self):
+        return self.wombat.defecate()
 
 
 class SimpleMockTestCase(unittest.TestCase):
@@ -56,20 +73,20 @@ class SimpleMockTestCase(unittest.TestCase):
         self.mock.masticate()
 
     def test_mock_returns(self):
-        """ mocksey.MockObject: Mocked function returns requested value """
+        """ mocksey.MockseyObject: Mocked function returns requested value """
         masticate_return = "Okay okay, I'll chew it up!"
         self.mock.returns('masticate', masticate_return)
         self.assertEqual(masticate_return, self.mob.feed())
 
     def test_mock_returns_at(self):
-        """ mocksey.MockObject: Mocked function returns requested value at requested index """
+        """ mocksey.MockseyObject: Mocked function returns requested value at requested index """
         masticate_return = "Okay okay, I'll chew it up attempt %d!"
         for trial in range(random.randint(2, 15)):
-            self.mock.returns_at(trial, 'masticate', masticate_return % (trial + 1))
-            self.assertEqual(masticate_return % (trial + 1), self.mob.feed())
+            self.mock.returns_at(trial, 'masticate', masticate_return % (trial))
+            self.assertEqual(masticate_return % (trial), self.mob.feed())
 
     def test_mock_expect_once(self):
-        """ mocksey.MockObject: Mock blows up if an expected function is not called """
+        """ mocksey.MockseyObject: Mock blows up if an expected function is not called """
         self.mock.expect_once('masticate')
         try:
             self.mock.run_asserts(assert_equals)
@@ -78,10 +95,10 @@ class SimpleMockTestCase(unittest.TestCase):
             pass  # we want it to kablooey this way, hooray!
 
     def test_mock_expect_multiple(self):
-        """ mocksey.MockObject: Mock blows up if an expected function is not called """
+        """ mocksey.MockseyObject: Mock blows up if an expected function is not called """
         call_count = random.randint(1, 50)
         self.mock.expect_call_count('masticate', call_count)
-        for waffle in range(call_count):
+        for waffle in range(call_count - 1):
             self.mock.masticate()
         try:
             self.mock.run_asserts(assert_equals)
@@ -91,6 +108,57 @@ class SimpleMockTestCase(unittest.TestCase):
 
         self.mock.masticate()
         self.mock.run_asserts()
+
+    def test_unexpected_calls_are_tracked(self):
+        """ mocksey.MockseyObject: Mocksey keeps track of method calls even when they're not being asserted """
+        call_count = random.randint(1, 50)
+        for call_time in range(call_count):
+            self.mob.pat()
+
+        self.assertEqual(call_count, self.mock.called_functions['patty_pat']['count'])
+
+    def test_unexpected_calls_track_args(self):
+        """ mocksey.MockseyObject: Mocksey keeps track of method call args even when they're not being asserted """
+        pattable_patting_parts = ["Hand", "cheek", "foot", "toe", "30-foot pole"]
+        choice = random.choice(pattable_patting_parts)
+        self.mob.pat(choice)
+        self.assertEqual((choice,), self.mock.called_functions['patty_pat'][0]['args'])
+
+    def test_unexpected_calls_track_kwargs(self):
+        """ mocksey.MockseyObject: Mocksey keeps track of method call kwargs even when they're not being asserted """
+        amazing_wombat_actions = [
+            {"fly": "faster than light"},
+            {"dig": "like a boss"},
+            {"trample": "armies of zombies"},
+            {"shoot": "Space-mutants with eye lazorz"},
+            {"speak": "perfect Russian"},
+            {"dance": "all teh koalas"},
+            {"be": "cute...or says my wife", "scare": "all the crawdillys out"},
+            {"lead": "super duper secret life of crime, villany and wombatery"},
+        ]
+        choice = random.choice(amazing_wombat_actions)
+        self.mob.perform(**choice)
+
+        self.assertEqual(choice, self.mock.called_functions['perform'][0]['kwargs'])
+
+    def test_raises(self):
+        """ mocksey.MockseyObject: Mocksey can raise on a given function call """
+        class ZombieInvasion(Exception):
+            pass
+        self.mock.raises('defecate', ZombieInvasion)
+
+        try:
+            self.mob.do_yer_business()
+            self.fail("Did not raise as expected")
+        except ZombieInvasion:
+            pass  # Just as I had feared!  All the Safety Wombats will be constipated during the Zombie Invasion
+
+    def test_supports_with_statement(self):
+        """ mocksey.MockseyObject: Mocksey mocks can be used in python's 'with' statement """
+        with MockseyObject() as mocksey:
+            mocksey.expect_once('something')
+
+#test module mocking...i.e. import something like smtp and set a mock on smtp.SMTP
 
 if __name__ == '__main__':
     unittest.main()
