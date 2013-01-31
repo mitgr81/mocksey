@@ -12,6 +12,16 @@ I was teaching a class on unit testing to a group of co-workers who were familia
 
 Mocksey the TDD'd version of that TDD utilty. `It's so meta even this acronym <http://xkcd.com/917/>`_.
 
+Installation
+============
+
+Either find mocksey on PyPI_ or install it with pip or easy_install
+::
+
+  pip install mocksey
+  #or
+  easy_install mocksey
+
 Basic Usage
 ===========
 
@@ -26,3 +36,4 @@ This software is hereby released under the MIT License, as seen in the LICENSE f
 
 .. |BuildImage| image:: https://secure.travis-ci.org/mitgr81/mocksey.png
 .. _BuildImage: https://travis-ci.org/mitgr81/mocksey
+.. _PyPI: http://pypi.python.org/pypi/mocksey
