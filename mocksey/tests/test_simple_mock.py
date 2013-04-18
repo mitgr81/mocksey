@@ -27,7 +27,7 @@ class WileyWombat(object):
 
     def perform(self, **feat):
         while True:
-            print("Now %s-ifying %s" % feat.items()[0])
+            print("Now {}-ifying {}".format(feat.items()[0]))
 
 
 class WombatMob(object):
@@ -60,7 +60,7 @@ class SimpleMockTestCase(unittest.TestCase):
 
     def test_mock_reports_itself_as_mock(self):
         """ mocksey.generate_mock: Mock's repr reveals it's true nature"""
-        self.assertEqual("MockWileyWombat", '%s' % self.mock, "Mock did not identify as mock in repr")
+        self.assertEqual("MockWileyWombat", '{}'.format(self.mock), "Mock did not identify as mock in repr")
 
     def test_mock_inherits_attributes(self):
         """ mocksey.generate_mock: Attributes on mocked class get mirrored onto mock"""
@@ -84,30 +84,6 @@ class SimpleMockTestCase(unittest.TestCase):
         for trial in range(random.randint(2, 15)):
             self.mock.returns_at(trial, 'masticate', masticate_return % (trial))
             self.assertEqual(masticate_return % (trial), self.mob.feed())
-
-    def test_mock_expect_once(self):
-        """ mocksey.MockseyObject: Mock blows up if an expected function is not called """
-        self.mock.expect_once('masticate')
-        try:
-            self.mock.run_asserts(assert_equals)
-            raise Exception("Did not blow when an expected function was not called")  # Can't rely on self.fail, as that's an AssertionError
-        except AssertionError:
-            pass  # we want it to kablooey this way, hooray!
-
-    def test_mock_expect_multiple(self):
-        """ mocksey.MockseyObject: Mock blows up if an expected function is not called """
-        call_count = random.randint(1, 50)
-        self.mock.expect_call_count('masticate', call_count)
-        for waffle in range(call_count - 1):
-            self.mock.masticate()
-        try:
-            self.mock.run_asserts(assert_equals)
-            raise Exception("Did not blow when an expected function was not called enough")  # Can't rely on self.fail, as that's an AssertionError
-        except AssertionError:
-            pass  # we want it to kablooey this way, hooray!
-
-        self.mock.masticate()
-        self.mock.run_asserts()
 
     def test_unexpected_calls_are_tracked(self):
         """ mocksey.MockseyObject: Mocksey keeps track of method calls even when they're not being asserted """

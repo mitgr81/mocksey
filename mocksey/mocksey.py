@@ -1,8 +1,16 @@
 import types
 
 
-def mocksey_assert_equal(expected, actual, message=''):
-    assert expected == actual, message
+def mocksey_assert_equal(expected, actual, message=None):
+    def asserter(expected, actual, message=None):
+        assert expected == actual, message
+
+    try:
+        from nose.tools import assert_equals
+        asserter = assert_equals
+    except ImportError:
+        pass
+    asserter(expected, actual, message)
 
 
 class MockseyObject(object):
@@ -18,7 +26,7 @@ class MockseyObject(object):
         pass
 
     def __repr__(self):
-        return "Mock%s" % self.__class__.__name__
+        return "Mock{}".format(self.__class__.__name__)
 
     def __getattr__(self, function_name):
         if function_name in self.expected_functions:
@@ -47,14 +55,26 @@ class MockseyObject(object):
             if function_data.get('count', 0) > 0:
                 expected = self.expected_functions[function_name]['count']
                 actual = self.called_functions.get(function_name, {'count': 0})['count']
-                assert_equal(expected, actual, "Mocksey expected %s to be called %d times, but it was called %d." % (function_name, expected, actual))
+                assert_equal(expected, actual, "Mockseyed{} expected '{}' to be called {} times, but it was called {}.".format(self.__class__.__name__, function_name, expected, actual))
+                for call in range(function_data['count']):
+                    expected_params = function_data.get(call, {'args': '*', 'kwargs': '*'})
+                    if expected_params['args'] != '*':
+                        assert_equal(expected_params['args'], self.called_functions[function_name][call]['args'])
+                    if expected_params['kwargs'] != '*':
+                        assert_equal(expected_params['kwargs'], self.called_functions[function_name][call]['kwargs'])
 
     def expect_once(self, expected_function, args='*', kwargs='*'):
         self.expect_call_count(expected_function, 1)
+        self.expect_at(expected_function, 0, args=args, kwargs=kwargs)
+
+    def expect_at(self, expected_function, index, args='*', kwargs='*'):
+        self.expected_functions[expected_function][index] = {'args': args, 'kwargs': kwargs}
+        self.expect_call_count(expected_function, index + 1)
 
     def expect_call_count(self, expected_function, count):
         self.expected_functions[expected_function] = self.expected_functions.get(expected_function, {'count': 0})
-        self.expected_functions[expected_function]['count'] = count
+        if self.expected_functions[expected_function].get('count', 0) < count:
+            self.expected_functions[expected_function]['count'] = count
 
     def returns(self, returning_function, return_value):
         self.returns_at('*', returning_function, return_value)
