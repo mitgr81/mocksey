@@ -5,6 +5,15 @@ Stupidly-simple python mocking utility with moxie.
 
 |BuildImage|_
 
+.. image:: https://pypip.in/v/$REPO/badge.png
+    :target: https://crate.io/packages/$REPO/
+    :alt: Latest PyPI version
+
+.. image:: https://pypip.in/d/$REPO/badge.png
+    :target: https://crate.io/packages/$REPO/
+    :alt: Number of PyPI downloads
+
+
 Mocksey Motivation
 ==================
 
