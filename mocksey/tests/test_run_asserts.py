@@ -82,6 +82,17 @@ class SimpleMockTestCase(unittest.TestCase):
         self.mock.masticate()
         self.mock.run_asserts()
 
+    def test_mock_expect_never(self):
+        """ mocksey.MockseyObject: Mock blows up if an function who is supposed to never be called is called """
+        self.mock.expect_never('go_crazygonuts')
+        self.mock.go_crazygonuts()
+
+        try:
+            self.mock.run_asserts(assert_equals)
+            raise Exception("Did not blow up when a function that we expected to never be called was called")  # Can't rely on self.fail, as that's an AssertionError
+        except AssertionError:
+            pass  # we want it to kablooey this way, hooray!
+
     ############################# ARG VERIFICATION ##################################
 
     def test_mock_validates_args_for_single_call(self):
