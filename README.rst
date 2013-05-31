@@ -13,6 +13,11 @@ Stupidly-simple python mocking utility with moxie.
     :target: https://crate.io/packages/mocksey/
     :alt: Number of PyPI downloads
 
+|Coverage Status|
+
+ .. |Coverage Status| image:: https://coveralls.io/repos/mitgr81/mocksey/badge.png
+    :target: https://coveralls.io/r/mitgr81/mocksey
+
 
 Mocksey Motivation
 ==================
