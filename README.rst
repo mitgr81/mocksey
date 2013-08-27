@@ -43,6 +43,11 @@ It's pretty simple.  Create a mocked object with generate_mock, inject it (or mo
 
 The unit tests are a pretty decent working example.
 
+Tweaksey
+========
+
+Tweaksey is a collection of beautification wrappers.  Currently there's only one around mock_, but there may be more in the future.  It'll look best if you also have nose_ installed, and may only be worth it in that case, actually.  Anyhow, to use it simply import tweaksey from mocksey and get your copy of the mock package from ``tweaksey.tweak_mock``.  Your mock assertions should now have a touch more friendliness.  If there are more you'd like to add, go for it!  Michael Foord, if you want to take the output and run, that cool too (conversely, if you don't like that I did this, I'll kill it square dead).
+
 
 License
 =======
@@ -51,3 +56,5 @@ This software is hereby released under the MIT License, as seen in the LICENSE f
 .. |BuildImage| image:: https://secure.travis-ci.org/mitgr81/mocksey.png
 .. _BuildImage: https://travis-ci.org/mitgr81/mocksey
 .. _PyPI: http://pypi.python.org/pypi/mocksey
+.. _mock: http://www.voidspace.org.uk/python/mock/
+.. _nose: https://pypi.python.org/pypi/nose/
