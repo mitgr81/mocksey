@@ -62,8 +62,10 @@ def tweak_mock():
             expected = self._format_mock_call_signature(args, kwargs)
             raise AssertionError('Expected call: %s\nNot called' % (expected,))
 
-        arg_out = 'Nothing!'
-        kwarg_out = 'Nothing!'
+        nofail = 'Nothing!'
+
+        arg_out = nofail
+        kwarg_out = nofail
         try:
             mocksey_assert_equal(args, self.call_args[0])
         except AssertionError as e:
@@ -74,7 +76,7 @@ def tweak_mock():
         except AssertionError as e:
             kwarg_out = str(e)
 
-        if arg_out or kwarg_out:
+        if arg_out != nofail or kwarg_out != nofail:
             output = '{} Suffered the following call issues (expected != actual):\nArgs:  {}\nKwargs: {}'.format(self, arg_out, kwarg_out)
             raise AssertionError(output)
 
