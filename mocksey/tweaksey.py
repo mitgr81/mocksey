@@ -4,7 +4,7 @@ from mocksey import mocksey_assert_equal
 def tweak_mock():
     import mock
     from mock import call
-    def mocksey_assert_called_once_with(_mock_self, *args, **kwargs):
+    def mocksey_assert_called_once_with(self, *args, **kwargs):
         """assert that the mock was called exactly once and with the specified
         arguments.
 
@@ -15,10 +15,8 @@ def tweak_mock():
             All rights reserved.
             E-mail : fuzzyman AT voidspace DOT org DOT uk
         """
-        self = _mock_self
         if not self.call_count == 1:
-            msg = ("{} expected to be called once. Called {:d} times with {}.".format(self, self.call_count, self.call_args_list))
-            raise AssertionError(msg)
+            raise AssertionError("Mock '{}' expected to be called once. Called {:d} times with {}.".format(self, self.call_count, self.call_args_list))
         return self.assert_called_with(*args, **kwargs)
 
 
@@ -36,15 +34,19 @@ def tweak_mock():
             All rights reserved.
             E-mail : fuzzyman AT voidspace DOT org DOT uk
         """
-        kall = call(*args, **kwargs)
-        if kall not in self.call_args_list:
-            expected_string = self._format_mock_call_signature(args, kwargs)
-            raise AssertionError(
-                '{} call not found among:\n\t{}'.format(expected_string, self.call_args_list)
-            )
+        if self.call_count <= 1:
+            self.assert_called_with(*args, **kwargs)
+        else:
+            kall = call(*args, **kwargs)
+            if kall not in self.call_args_list:
+                expected_string = self._format_mock_call_signature(args, kwargs)
+                foo = self.call_args_list
+                if self._mock_name:
+                    foo = repr(self.call_args_list).replace('call(', self._mock_name + '(')
+                raise AssertionError('{} call not found among:\n\t{}'.format(expected_string, foo))
 
 
-    def mocksey_assert_called_with(_mock_self, *args, **kwargs):
+    def mocksey_assert_called_with(self, *args, **kwargs):
         """assert that the mock was called with the specified arguments.
 
         Raises an AssertionError if the args and keyword args passed in are
@@ -57,10 +59,8 @@ def tweak_mock():
             All rights reserved.
             E-mail : fuzzyman AT voidspace DOT org DOT uk
         """
-        self = _mock_self
-        if self.call_args is None:
-            expected = self._format_mock_call_signature(args, kwargs)
-            raise AssertionError('Expected call: %s\nNot called' % (expected,))
+        if not self.called:
+            raise AssertionError("Mock '{}' was never called.".format(self))
 
         nofail = 'Nothing!'
 

@@ -35,7 +35,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
-        "Topic :: Software Development :: Testing"
+        "Topic :: Software Development :: Testing",
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
