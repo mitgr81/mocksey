@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 from mocksey import mocksey_assert_equal
 
-def tweak_mock():
-    import mock
-    from mock import call
+def tweak_mock(mock):
+    call = mock.call
     def mocksey_assert_called_once_with(self, *args, **kwargs):
         """assert that the mock was called exactly once and with the specified
         arguments.
@@ -89,7 +88,7 @@ def tweak_mock():
 
 if __name__ == "__main__":
     import mock
-    tweak_mock()
+    tweak_mock(mock)
     foo = mock.MagicMock(name="past")
     foo('lollipop', rambo='doody')
     # foo('aosenuth', 'asoneuht2aou')

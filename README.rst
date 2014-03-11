@@ -49,6 +49,15 @@ Tweaksey
 Tweaksey is a collection of beautification wrappers.  Currently there's only one around mock_, but there may be more in the future.  It'll look best if you also have nose_ installed, and may only be worth it in that case, actually.  Anyhow, to use it simply import tweaksey from mocksey and get your copy of the mock package from ``tweaksey.tweak_mock``.  Your mock assertions should now have a touch more friendliness.  If there are more you'd like to add, go for it!  Michael Foord, if you want to take the output and run, that cool too (conversely, if you don't like that I did this, I'll kill it square dead).
 
 
+Changelog
+=========
+
+0.3.0
+-----
+Tweaksey now requires you to pass in the 'mock' library that you're
+tweaking.  This allows one to apply mocks to python3's ``unittest.mock``.
+
+
 License
 =======
 This software is hereby released under the MIT License, as seen in the LICENSE file

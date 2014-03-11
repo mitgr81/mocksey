@@ -14,7 +14,7 @@ class TweakseyTweaksMockCase(unittest.TestCase):
         self.ncm_acow = mock.NonCallableMock.assert_called_once_with
         self.ncm_acw = mock.NonCallableMock.assert_called_with
         self.ncm_aac = mock.NonCallableMock.assert_any_call
-        tweaksey.tweak_mock()
+        tweaksey.tweak_mock(mock)
 
         self.some_mock = mock.MagicMock()
         # print(mock.NonCallableMock.assert_called_with.__code__)
