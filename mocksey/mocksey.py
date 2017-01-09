@@ -8,6 +8,7 @@ def mocksey_assert_equal(expected, actual, message=None):
     try:
         from nose.tools import assert_equals
         asserter = assert_equals
+        asserter.__self__.maxDiff = None
     except ImportError:
         pass
     asserter(expected, actual, message)
