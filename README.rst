@@ -52,6 +52,10 @@ Tweaksey is a collection of beautification wrappers.  Currently there's only one
 Changelog
 =========
 
+0.3.1
+-----
+Mocksey now sets nose to full diff mode.
+
 0.3.0
 -----
 Tweaksey now requires you to pass in the 'mock' library that you're
