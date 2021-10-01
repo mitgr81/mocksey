@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 from mocksey import mocksey_assert_equal
 
+
 def tweak_mock(mock):
     call = mock.call
+
     def mocksey_assert_called_once_with(self, *args, **kwargs):
         """assert that the mock was called exactly once and with the specified
         arguments.
@@ -15,9 +17,11 @@ def tweak_mock(mock):
             E-mail : fuzzyman AT voidspace DOT org DOT uk
         """
         if not self.call_count == 1:
-            raise AssertionError("Mock '{}' expected to be called once. Called {:d} times with {}.".format(self, self.call_count, self.call_args_list))
+            raise AssertionError(
+                f"Mock '{self}' expected to be called once."
+                f" Called {self.call_count:d} times with {self.call_args_list}."
+            )
         return self.assert_called_with(*args, **kwargs)
-
 
     def mocksey_assert_any_call(self, *args, **kwargs):
         """assert the mock has been called with the specified arguments.
@@ -41,9 +45,8 @@ def tweak_mock(mock):
                 expected_string = self._format_mock_call_signature(args, kwargs)
                 foo = self.call_args_list
                 if self._mock_name:
-                    foo = repr(self.call_args_list).replace('call(', self._mock_name + '(')
-                raise AssertionError('{} call not found among:\n\t{}'.format(expected_string, foo))
-
+                    foo = repr(self.call_args_list).replace("call(", self._mock_name + "(")
+                raise AssertionError(f"{expected_string} call not found among:\n\t{foo}")
 
     def mocksey_assert_called_with(self, *args, **kwargs):
         """assert that the mock was called with the specified arguments.
@@ -61,7 +64,7 @@ def tweak_mock(mock):
         if not self.called:
             raise AssertionError("Mock '{}' was never called.".format(self))
 
-        nofail = 'Nothing!'
+        nofail = "Nothing!"
 
         arg_out = nofail
         kwarg_out = nofail
@@ -76,9 +79,11 @@ def tweak_mock(mock):
             kwarg_out = str(e)
 
         if arg_out != nofail or kwarg_out != nofail:
-            output = '{} Suffered the following call issues (expected != actual):\nArgs:  {}\nKwargs: {}'.format(self, arg_out, kwarg_out)
+            output = (
+                f"{self} Suffered the following call issues (expected != actual):"
+                f"\nArgs:  {arg_out}\nKwargs: {kwarg_out}"
+            )
             raise AssertionError(output)
-
 
     mock.NonCallableMock.assert_called_once_with = mocksey_assert_called_once_with
     mock.NonCallableMock.assert_any_call = mocksey_assert_any_call
@@ -86,11 +91,13 @@ def tweak_mock(mock):
 
     return mock
 
+
 if __name__ == "__main__":
-    import mock
+    from unittest import mock
+
     tweak_mock(mock)
     foo = mock.MagicMock(name="past")
-    foo('lollipop', rambo='doody')
+    foo("lollipop", rambo="doody")
     # foo('aosenuth', 'asoneuht2aou')
-    foo.assert_called_once_with('aosenuth', 'asoneuht')
+    foo.assert_called_once_with("aosenuth", "asoneuht")
     # foo.assert_called_with('lollipoop', rambo='duty', zippo=True)
