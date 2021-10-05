@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mocksey"
-version = "0.3.1"
+version = "0.4.0"
 description = "Stupidly-simple python mocking utility with moxie."
 authors = ["Chris McGraw <mitgr81+mocksey@mitgr81.com>"]
 repository = "https://github.com/mitgr81/mocksey"
